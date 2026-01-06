@@ -6,9 +6,9 @@ import com.example.beans.TestBean;
 
 @org.springframework.context.annotation.Configuration
 public class Configuration {
-	
-	@Bean
-	public TestBean testBean() {
+
+    @Bean
+    TestBean testBean() {
 		return new TestBean();
 	}
 
