@@ -6,6 +6,8 @@ import com.example.LazyLoadingBean;
 import com.example.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,7 @@ import com.example.services.StudentServiceImpl;
 
 @RestController
 @RequestMapping("/student")
+@PropertySource("custom.properties")
 public class StudentController {
 	
 	@Autowired
@@ -31,6 +34,9 @@ public class StudentController {
 
 	@Autowired
 	private LazyLoadingBean lazyLoadingBean;
+
+	@Value("${message}")
+	private String message;
 	
 	@PostMapping("/add")
 	public ResponseEntity<Student> addStudent(@RequestBody StudentRequest studentRequest) {
@@ -40,6 +46,7 @@ public class StudentController {
 	
 	@GetMapping("/all")
 	public ResponseEntity<List<Student>> getStudents() {
+		System.out.println("Current msg is: " + message);
 		return ResponseEntity.ok(studentService.getStudents());
 	}
 
