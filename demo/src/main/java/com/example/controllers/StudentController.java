@@ -2,7 +2,10 @@ package com.example.controllers;
 
 import java.util.List;
 
+import com.example.LazyLoadingBean;
+import com.example.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +23,14 @@ import com.example.services.StudentServiceImpl;
 public class StudentController {
 	
 	@Autowired
-	private StudentServiceImpl studentService;
+	@Qualifier("studentServiceImpl")
+	private StudentService studentService;
 	
 	@Autowired
 	private StudentMapper mapper;
+
+	@Autowired
+	private LazyLoadingBean lazyLoadingBean;
 	
 	@PostMapping("/add")
 	public ResponseEntity<Student> addStudent(@RequestBody StudentRequest studentRequest) {
