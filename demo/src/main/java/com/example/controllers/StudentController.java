@@ -1,9 +1,11 @@
 package com.example.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.LazyLoadingBean;
 import com.example.config.MailConfig;
+import com.example.exception.StudentNotFoundException;
 import com.example.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,8 +54,20 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Student> getStudent(@PathVariable int id) {
-		return ResponseEntity.ok(studentService.getStudent(id).get());
+	public ResponseEntity<Student> getStudent(@PathVariable int id) throws StudentNotFoundException {
+		Optional<Student> student = studentService.getStudent(id);
+
+		if (student.isPresent()) {
+			return ResponseEntity.ok(student.get());
+		}
+		else {
+			throw new StudentNotFoundException("Student not found for ID: " + id);
+		}
+	}
+
+	@GetMapping("/idByReq")
+	public ResponseEntity<Student> getStudentRequestParam(@RequestParam Integer studentId) {
+		return ResponseEntity.ok(studentService.getStudent(studentId).get());
 	}
 
 }
