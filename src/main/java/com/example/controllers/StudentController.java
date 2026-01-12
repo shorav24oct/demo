@@ -7,6 +7,8 @@ import com.example.LazyLoadingBean;
 import com.example.config.MailConfig;
 import com.example.exception.StudentNotFoundException;
 import com.example.services.StudentService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +43,14 @@ public class StudentController {
 	private MailConfig mailConfig;
 	
 	@PostMapping("/add")
-	public ResponseEntity<Student> addStudent(@RequestBody StudentRequest studentRequest) {
+	public ResponseEntity<Student> addStudent(
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = StudentRequest.class)
+					)
+			)
+			@RequestBody StudentRequest studentRequest) {
 		Student student = mapper.toEntity(studentRequest);
 		return ResponseEntity.ok(studentService.addStudent(student));
 	}
