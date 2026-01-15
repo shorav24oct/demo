@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: versioning-demo
+
+  mvc:
+    apiversion:
+      use:
+        path-segment: 2
+      supported:
+        - 1
+        - 2
+      default: 1
